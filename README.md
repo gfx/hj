@@ -85,14 +85,18 @@ output:
 
 ## Install
 
-TBD
+cargo(1) and rustc(1) v1.58 or greater are required to install:
+
+```
+cargo install --path .
+```
 
 ## Supported Commands
 
 * curl - https://curl.se/
   * `-sv` options are required for `hj`
 * h2o-httplicent - https://github.com/h2o/h2o/
-
+* Any of HTTP/1 style text
 
 ## License
 
