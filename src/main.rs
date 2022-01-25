@@ -270,7 +270,7 @@ fn parse_content(
 }
 
 fn process_response(cli: &Cli, lbin: &mut LineBufferedStdin) -> Result<(), Box<dyn Error>> {
-    std::io::stdout().write(b"{")?;
+    std::io::stdout().write_all(b"{")?;
 
     skip(lbin)?;
     parse_status_line(lbin)?;
@@ -290,7 +290,7 @@ fn process_response(cli: &Cli, lbin: &mut LineBufferedStdin) -> Result<(), Box<d
     }
     skip(lbin)?;
 
-    std::io::stdout().write(b"}")?;
+    std::io::stdout().write_all(b"}")?;
 
     return Ok(());
 }
@@ -305,14 +305,14 @@ fn main() {
 
     let mut initial = true;
     if cli.array {
-        std::io::stdout().write(b"[").unwrap();
+        std::io::stdout().write_all(b"[").unwrap();
     }
     loop {
         if initial {
             initial = false;
         } else {
             if cli.array {
-                std::io::stdout().write(b",").unwrap();
+                std::io::stdout().write_all(b",").unwrap();
             }
         }
         if let Err(err) = process_response(&cli, &mut lbin) {
@@ -320,13 +320,13 @@ fn main() {
             break;
         }
         if !cli.array {
-            std::io::stdout().write(b"\n").unwrap();
+            std::io::stdout().write_all(b"\n").unwrap();
         }
         if lbin.is_eof() {
             break;
         }
     }
     if cli.array {
-        std::io::stdout().write(b"]\n").unwrap();
+        std::io::stdout().write_all(b"]\n").unwrap();
     }
 }
