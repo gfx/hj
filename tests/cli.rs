@@ -104,3 +104,24 @@ fn parse_curl_sv_as_json() -> Result<(), Box<dyn std::error::Error>> {
 
     Ok(())
 }
+
+#[test]
+fn parse_curl_sv_as_json_jsonplaceholder() -> Result<(), Box<dyn std::error::Error>> {
+    let mut cmd = Command::cargo_bin("hj")?;
+
+    // curl -sv https://jsonplaceholder.typicode.com/todos/1 2>&1 | tee tests/response-jsonplaceholder.txt
+    cmd.timeout(Duration::from_secs(1))
+        .write_stdin(read_to_string("tests/response-jsonplaceholder.txt")?.as_bytes());
+
+    let assert = cmd.assert().success().stderr(predicate::str::is_empty());
+    let output_str = assert.get_output().stdout.clone();
+    let result: JsonResponse = serde_json::from_slice(&output_str)?;
+
+    assert_eq!(result.protocol, "HTTP/1.1");
+    assert_eq!(result.status_code, 200);
+    assert_eq!(result.headers["content-type"], "application/json; charset=utf-8");
+    assert_eq!(result.content["id"], 1);
+
+    Ok(())
+}
+

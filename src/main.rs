@@ -2,7 +2,6 @@ use lazy_static::lazy_static;
 use std::error::Error;
 use std::io::{Read, Stdin, Write};
 
-
 use clap::Parser;
 use regex::Regex;
 use tinyjson::JsonValue;
@@ -77,7 +76,7 @@ impl LineBufferedStdin {
                     self.unread_line(line);
                     false
                 }
-            },
+            }
             Err(_) => true,
         };
     }
@@ -107,7 +106,11 @@ fn skip(lbin: &mut LineBufferedStdin) -> Result<(), Box<dyn Error>> {
                 }
 
                 // curl's TLS messages and request headers
-                if line.starts_with("* ") || line.starts_with("> ") || line.starts_with("{ ") || line.starts_with("} ") {
+                if line.starts_with("* ")
+                    || line.starts_with("> ")
+                    || line.starts_with("{ ")
+                    || line.starts_with("} ")
+                {
                     continue;
                 }
 
@@ -125,7 +128,8 @@ fn parse_status_line(lbin: &mut LineBufferedStdin) -> Result<(), Box<dyn Error>>
     // e.g. "HTTP/1.1 200 OK" or "HTTP/3 200"
     lazy_static! {
         static ref PAT: Regex =
-            Regex::new(r"^(?:< )?(?P<protocol>HTTP/[0-9]+(?:\.[0-9]+)?) (?P<status>[0-9]+)").unwrap();
+            Regex::new(r"^(?:< )?(?P<protocol>HTTP/[0-9]+(?:\.[0-9]+)?) (?P<status>[0-9]+)")
+                .unwrap();
     }
 
     match lbin.read_line() {
@@ -171,13 +175,18 @@ fn parse_header_fields(
         match lbin.read_line() {
             Ok(line) => {
                 match line.trim() {
-                    "" |  "<" => {
+                    "" | "<" => {
                         return Ok(());
-                    },
+                    }
                     _ => {}
                 }
                 if let Some(caps) = PAT.captures(&line) {
-                    let raw_name = caps.name("name").unwrap().as_str().trim().to_ascii_lowercase();
+                    let raw_name = caps
+                        .name("name")
+                        .unwrap()
+                        .as_str()
+                        .trim()
+                        .to_ascii_lowercase();
                     let raw_value = caps.name("value").unwrap().as_str().trim();
                     let name = str_to_json_string(&raw_name);
                     let value = str_to_json_string(raw_value);
@@ -224,17 +233,83 @@ fn parse_content_raw(
     return Ok(());
 }
 
+#[derive(Debug, Eq, PartialEq)]
+struct MimeType {
+    // application/vnd.github+json; charset=utf-8
+    // ^^^^^^^^^^^                                t1
+    //                        ^^^^                t2
+    //             ^^^^^^^^^^                     t3
+    //                              ^^^^^^^^^^^^^ parameters
+    t1: String,
+    t2: String,
+    t3: String,
+    // parameters are not used in this program
+}
+
+fn parse_mime_type(src: &str) -> MimeType {
+    lazy_static! {
+        static ref PAT: Regex = Regex::new(
+            r"^(?P<category>[^/]+)/(?:(?P<secondary_type>[^+]+)\+)?(?P<primary_type>[^;]+)"
+        )
+        .unwrap();
+    }
+    if let Some(caps) = PAT.captures(src) {
+        let t1 = caps.name("category").unwrap().as_str().trim().to_string();
+        let t2 = caps
+            .name("primary_type")
+            .unwrap()
+            .as_str()
+            .trim()
+            .to_string();
+        let t3 = match caps.name("secondary_type") {
+            Some(s) => s.as_str().trim().to_string(),
+            None => String::new(),
+        };
+        return MimeType { t1, t2, t3 };
+    }
+    return MimeType {
+        t1: String::new(),
+        t2: String::new(),
+        t3: String::new(),
+    };
+}
+
+#[test]
+fn test_parse_mime_type() {
+    assert_eq!(
+        parse_mime_type("application/json"),
+        MimeType {
+            t1: "application".to_string(),
+            t2: "json".to_string(),
+            t3: "".to_string(),
+        }
+    );
+    assert_eq!(
+        parse_mime_type("application/vnd.github+json; charset=utf-8"),
+        MimeType {
+            t1: "application".to_string(),
+            t2: "json".to_string(),
+            t3: "vnd.github".to_string(),
+        }
+    );
+}
+
+fn is_content_type_json(content_type: &Option<String>) -> bool {
+    if let Some(ref content_type) = content_type {
+        let mime_type = parse_mime_type(content_type);
+        return mime_type.t1.eq_ignore_ascii_case("application")
+            && mime_type.t2.eq_ignore_ascii_case("json");
+    }
+    return false;
+}
+
 fn parse_content(
     lbin: &mut LineBufferedStdin,
     content_type: Option<String>,
     content_length: Option<usize>,
 ) -> Result<(), Box<dyn Error>> {
     // FIXME: parse more complicated media types, e.g. "application/vnd.github+json; charset=utf-8"
-    if content_type.is_some()
-        && content_type
-            .unwrap()
-            .eq_ignore_ascii_case("application/json")
-    {
+    if is_content_type_json(&content_type) {
         let buf = if let Some(len) = content_length {
             lbin.read(len)?
         } else {

@@ -1,0 +1,80 @@
+*   Trying 104.21.4.48:443...
+* Connected to jsonplaceholder.typicode.com (104.21.4.48) port 443 (#0)
+* ALPN, offering http/1.1
+*  CAfile: /opt/chef-workstation/embedded/ssl/certs/cacert.pem
+*  CApath: none
+} [5 bytes data]
+* TLSv1.3 (OUT), TLS handshake, Client hello (1):
+} [512 bytes data]
+* TLSv1.3 (IN), TLS handshake, Server hello (2):
+{ [122 bytes data]
+* TLSv1.3 (IN), TLS handshake, Encrypted Extensions (8):
+{ [25 bytes data]
+* TLSv1.3 (IN), TLS handshake, Certificate (11):
+{ [2335 bytes data]
+* TLSv1.3 (IN), TLS handshake, CERT verify (15):
+{ [80 bytes data]
+* TLSv1.3 (IN), TLS handshake, Finished (20):
+{ [52 bytes data]
+* TLSv1.3 (OUT), TLS change cipher, Change cipher spec (1):
+} [1 bytes data]
+* TLSv1.3 (OUT), TLS handshake, Finished (20):
+} [52 bytes data]
+* SSL connection using TLSv1.3 / TLS_AES_256_GCM_SHA384
+* ALPN, server accepted to use http/1.1
+* Server certificate:
+*  subject: C=US; ST=California; L=San Francisco; O=Cloudflare, Inc.; CN=sni.cloudflaressl.com
+*  start date: Jun 28 00:00:00 2021 GMT
+*  expire date: Jun 27 23:59:59 2022 GMT
+*  subjectAltName: host "jsonplaceholder.typicode.com" matched cert's "*.typicode.com"
+*  issuer: C=US; O=Cloudflare, Inc.; CN=Cloudflare Inc ECC CA-3
+*  SSL certificate verify ok.
+} [5 bytes data]
+> GET /todos/1 HTTP/1.1
+> Host: jsonplaceholder.typicode.com
+> User-Agent: curl/7.80.0
+> Accept: */*
+> 
+{ [5 bytes data]
+* TLSv1.3 (IN), TLS handshake, Newsession Ticket (4):
+{ [230 bytes data]
+* TLSv1.3 (IN), TLS handshake, Newsession Ticket (4):
+{ [230 bytes data]
+* old SSL session ID is stale, removing
+{ [5 bytes data]
+* Mark bundle as not supporting multiuse
+< HTTP/1.1 200 OK
+< Date: Tue, 25 Jan 2022 04:56:18 GMT
+< Content-Type: application/json; charset=utf-8
+< Content-Length: 83
+< Connection: keep-alive
+< x-powered-by: Express
+< x-ratelimit-limit: 1000
+< x-ratelimit-remaining: 999
+< x-ratelimit-reset: 1631494143
+< vary: Origin, Accept-Encoding
+< access-control-allow-credentials: true
+< cache-control: max-age=43200
+< pragma: no-cache
+< expires: -1
+< x-content-type-options: nosniff
+< etag: W/"53-hfEnumeNh6YirfjyjaujcOPPT+s"
+< via: 1.1 vegur
+< CF-Cache-Status: HIT
+< Age: 13039
+< Accept-Ranges: bytes
+< Expect-CT: max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+< Report-To: {"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=Pi%2FnjvOn9ptfoIAhslejnvQ8Xm8xU2wEU7POwWX8CJJgZ9uiQ5qTmUbY4FPESQG23YtRzUIVzFjmJrGnOxdvgwc39FTkjp2ZXX%2F0ANPAgrB7AqEuMZt16S%2FQhoDJOpDlTGM5bBhPQ%2FOsRAeyjaSQ"}],"group":"cf-nel","max_age":604800}
+< NEL: {"success_fraction":0,"report_to":"cf-nel","max_age":604800}
+< Server: cloudflare
+< CF-RAY: 6d2eea093865f8ab-NRT
+< alt-svc: h3=":443"; ma=86400, h3-29=":443"; ma=86400
+< 
+{ [83 bytes data]
+* Connection #0 to host jsonplaceholder.typicode.com left intact
+{
+  "userId": 1,
+  "id": 1,
+  "title": "delectus aut autem",
+  "completed": false
+}
