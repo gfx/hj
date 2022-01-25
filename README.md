@@ -2,6 +2,8 @@
 
 **hj** is a command line tool to convert HTTP/1 style text into JSON.
 
+This command is inspired by https://github.com/yusukebe/rj, but this command uses an external HTTP client instead of making HTTP requests internally.
+
 ## Synopsis
 
 Simple usage with **curl(1)**:
