@@ -1,0 +1,104 @@
+/path/to/file.c:80:34: runtime error: index -1 out of bounds for type 'T'
+SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior /path/to/file.c:80:34 in
+/path/to/file.c:507:34: runtime error: applying zero offset to null pointer
+SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior /path/to/file.c:507:34 in
+/path/to/file.c:507:34: runtime error: member access within null pointer of type 'T'
+SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior /path/to/file.c:507:34 in
+HTTP/3 200
+content-length: 643
+alt-svc: h3=":443";ma=86400,h3-29=":443";ma=86400,h3-27=":443";ma=86400
+server: Varnish
+retry-after: 0
+content-type: text/html
+x-served-by: cache-tyo11978
+accept-ranges: bytes
+date: Tue, 25 Jan 2022 01:18:19 GMT
+x-varnish: 527414503
+via: 1.1 varnish
+x-client-requests: 1
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="./css/checker.css" rel="stylesheet" type="text/css">
+  <title>HTTP/3!</title>
+</head>
+<body>
+  <div class="parent-wrapper">
+    <div class="body-wrapper">
+      <video playsinline autoplay muted loop width="500" height="500"><source src="/robot_http3_success_V3.mp4" type="video/mp4">
+      Your browser does not support the video tag, but it does support HTTP/3!
+      </video>
+      <div class="fastly-logo"><img src="./img/fastly-logo@2x.png" alt="Fastly" width="60" height="69"></div>
+    </div>
+  </div>
+</body>
+</html>
+HTTP/3 200
+content-length: 643
+alt-svc: h3=":443";ma=86400,h3-29=":443";ma=86400,h3-27=":443";ma=86400
+server: Varnish
+retry-after: 0
+content-type: text/html
+x-served-by: cache-tyo11978
+accept-ranges: bytes
+date: Tue, 25 Jan 2022 01:18:19 GMT
+x-varnish: 527414554
+via: 1.1 varnish
+x-client-requests: 2
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="./css/checker.css" rel="stylesheet" type="text/css">
+  <title>HTTP/3!</title>
+</head>
+<body>
+  <div class="parent-wrapper">
+    <div class="body-wrapper">
+      <video playsinline autoplay muted loop width="500" height="500"><source src="/robot_http3_success_V3.mp4" type="video/mp4">
+      Your browser does not support the video tag, but it does support HTTP/3!
+      </video>
+      <div class="fastly-logo"><img src="./img/fastly-logo@2x.png" alt="Fastly" width="60" height="69"></div>
+    </div>
+  </div>
+</body>
+</html>
+HTTP/3 200
+content-length: 643
+alt-svc: h3=":443";ma=86400,h3-29=":443";ma=86400,h3-27=":443";ma=86400
+server: Varnish
+retry-after: 0
+content-type: text/html
+x-served-by: cache-tyo11978
+accept-ranges: bytes
+date: Tue, 25 Jan 2022 01:18:19 GMT
+x-varnish: 527414595
+via: 1.1 varnish
+x-client-requests: 3
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="./css/checker.css" rel="stylesheet" type="text/css">
+  <title>HTTP/3!</title>
+</head>
+<body>
+  <div class="parent-wrapper">
+    <div class="body-wrapper">
+      <video playsinline autoplay muted loop width="500" height="500"><source src="/robot_http3_success_V3.mp4" type="video/mp4">
+      Your browser does not support the video tag, but it does support HTTP/3!
+      </video>
+      <div class="fastly-logo"><img src="./img/fastly-logo@2x.png" alt="Fastly" width="60" height="69"></div>
+    </div>
+  </div>
+</body>
+</html>
+/path/to/file.c:138:17: runtime error: applying non-zero offset 4 to null pointer
+SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior /path/to/file.c:138:17 in
