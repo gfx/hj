@@ -11,3 +11,9 @@ tinyjson = { version = "2" }
 regex = { version = "1", default-features = false, features = ["std"] }
 lazy_static = { version = "1"}
 scopeguard = { version = "1" }
+
+[dev-dependencies]
+assert_cmd = { version = "2.0" }
+predicates = { version = "2.1" }
+serde_json = { version = "1" }
+serde = { version = "1", features = ["derive"] }

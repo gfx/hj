@@ -125,16 +125,16 @@ fn parse_status_line(lbin: &mut LineBufferedStdin) -> Result<(), Box<dyn Error>>
     // e.g. "HTTP/1.1 200 OK" or "HTTP/3 200"
     lazy_static! {
         static ref PAT: Regex =
-            Regex::new(r"^(?:< )?HTTP/(?P<version>[0-9]+(?:\.[0-9]+)?) (?P<status>[0-9]+)").unwrap();
+            Regex::new(r"^(?:< )?(?P<protocol>HTTP/[0-9]+(?:\.[0-9]+)?) (?P<status>[0-9]+)").unwrap();
     }
 
     match lbin.read_line() {
         Ok(line) => {
             if let Some(caps) = PAT.captures(&line) {
-                let http_version = caps.name("version").unwrap().as_str();
+                let protocol = caps.name("protocol").unwrap().as_str();
                 let status_code = caps.name("status").unwrap().as_str();
 
-                print!("\"http_version\":\"{http_version}\",\"status_code\":{status_code}");
+                print!("\"protocol\":\"{protocol}\",\"status_code\":{status_code}");
                 return Ok(());
             }
             return Err(Box::new(std::io::Error::new(
@@ -177,9 +177,9 @@ fn parse_header_fields(
                     _ => {}
                 }
                 if let Some(caps) = PAT.captures(&line) {
-                    let raw_name = caps.name("name").unwrap().as_str().trim();
+                    let raw_name = caps.name("name").unwrap().as_str().trim().to_ascii_lowercase();
                     let raw_value = caps.name("value").unwrap().as_str().trim();
-                    let name = str_to_json_string(raw_name);
+                    let name = str_to_json_string(&raw_name);
                     let value = str_to_json_string(raw_value);
                     if initial {
                         initial = false;
@@ -299,7 +299,7 @@ fn main() {
             }
         }
         if let Err(err) = process_response(&cli, &mut lbin) {
-            eprintln!("Error: {err}");
+            eprintln!("hj error: {err}");
             break;
         }
         if !cli.array {
