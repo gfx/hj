@@ -308,7 +308,6 @@ fn parse_content(
     content_type: Option<String>,
     content_length: Option<usize>,
 ) -> Result<(), Box<dyn Error>> {
-    // FIXME: parse more complicated media types, e.g. "application/vnd.github+json; charset=utf-8"
     if is_content_type_json(&content_type) {
         let buf = if let Some(len) = content_length {
             lbin.read(len)?
