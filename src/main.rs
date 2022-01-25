@@ -1,6 +1,6 @@
 use lazy_static::lazy_static;
 use std::error::Error;
-use std::io::{Read, Stdin, Write};
+use std::io::Write;
 
 use clap::Parser;
 use regex::Regex;
@@ -8,6 +8,9 @@ use tinyjson::JsonValue;
 
 #[macro_use(defer)]
 extern crate scopeguard;
+
+mod reader;
+use reader::LineBufferedStdin;
 
 #[derive(Parser, Debug)]
 #[clap(about = "Converts HTTP/1 style HTTP responses into JSON.
@@ -20,66 +23,6 @@ struct Cli {
     /// Wrap responses with a JSON array, assuming multiple responses.
     #[clap(long, short)]
     array: bool,
-}
-
-struct LineBufferedStdin {
-    reader: Stdin,
-
-    buffer_stack: Vec<String>,
-}
-
-impl LineBufferedStdin {
-    fn read_line(&mut self) -> Result<String, std::io::Error> {
-        if let Some(line) = self.buffer_stack.pop() {
-            return Ok(line);
-        }
-
-        let mut line = String::new();
-        self.reader.read_line(&mut line)?;
-        return Ok(line);
-    }
-
-    fn unread_line(&mut self, line: String) {
-        self.buffer_stack.push(line);
-    }
-
-    fn consume_buffer_stack(&mut self) -> Vec<u8> {
-        let mut buf = Vec::new();
-        while let Some(line) = self.buffer_stack.pop() {
-            buf.extend(line.as_bytes());
-        }
-        return buf;
-    }
-
-    fn read(&mut self, size: usize) -> Result<Vec<u8>, std::io::Error> {
-        let mut buf1 = self.consume_buffer_stack();
-        let mut buf2 = vec![0; size - buf1.len()];
-        self.reader.read_exact(&mut buf2)?;
-        buf1.extend(buf2);
-        return Ok(buf1);
-    }
-
-    fn read_to_end(&mut self) -> Result<Vec<u8>, std::io::Error> {
-        let mut buf1 = self.consume_buffer_stack();
-        let mut buf2 = Vec::new();
-        self.reader.read_to_end(&mut buf2)?;
-        buf1.extend(buf2);
-        return Ok(buf1);
-    }
-
-    fn is_eof(&mut self) -> bool {
-        return match self.read_line() {
-            Ok(line) => {
-                if line.is_empty() {
-                    true
-                } else {
-                    self.unread_line(line);
-                    false
-                }
-            }
-            Err(_) => true,
-        };
-    }
 }
 
 // Some sort of unrelated stuff are accepted.
