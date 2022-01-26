@@ -90,13 +90,13 @@ fn parse_status_line(lbin: &mut LineBufferedStdin) -> Result<(), Box<dyn Error>>
             )));
         }
         Err(e) => {
-            return Err(Box::new(e));
+            Err(Box::new(e))
         }
     }
 }
 
 fn str_to_json_string(s: &str) -> String {
-    return JsonValue::String(s.to_string()).stringify().unwrap();
+    JsonValue::String(s.to_string()).stringify().unwrap()
 }
 
 fn parse_header_fields(
@@ -173,7 +173,7 @@ fn parse_content_raw(
     // TODO: handle binary data
     let content = str_to_json_string(&String::from_utf8_lossy(&buf));
     print!(",\"content\":{content}");
-    return Ok(());
+    Ok(())
 }
 
 #[derive(Debug, Eq, PartialEq)]
@@ -210,11 +210,11 @@ fn parse_mime_type(src: &str) -> MimeType {
         };
         return MimeType { t1, t2, t3 };
     }
-    return MimeType {
+    MimeType {
         t1: String::new(),
         t2: String::new(),
         t3: String::new(),
-    };
+    }
 }
 
 #[test]
@@ -243,7 +243,7 @@ fn is_content_type_json(content_type: &Option<String>) -> bool {
         return mime_type.t1.eq_ignore_ascii_case("application")
             && mime_type.t2.eq_ignore_ascii_case("json");
     }
-    return false;
+    false
 }
 
 fn parse_content(
@@ -266,7 +266,7 @@ fn parse_content(
         parse_content_raw(lbin, content_length)?;
     }
 
-    return Ok(());
+    Ok(())
 }
 
 fn process_response(cli: &Cli, lbin: &mut LineBufferedStdin) -> Result<(), Box<dyn Error>> {
@@ -292,7 +292,7 @@ fn process_response(cli: &Cli, lbin: &mut LineBufferedStdin) -> Result<(), Box<d
 
     std::io::stdout().write_all(b"}")?;
 
-    return Ok(());
+    Ok(())
 }
 
 fn main() {
@@ -310,10 +310,8 @@ fn main() {
     loop {
         if initial {
             initial = false;
-        } else {
-            if cli.array {
-                std::io::stdout().write_all(b",").unwrap();
-            }
+        } else if cli.array {
+            std::io::stdout().write_all(b",").unwrap();
         }
         if let Err(err) = process_response(&cli, &mut lbin) {
             eprintln!("hj error: {err}");

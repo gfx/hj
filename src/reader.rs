@@ -16,7 +16,7 @@ impl LineBufferedStdin {
 
         let mut line = String::new();
         self.reader.read_line(&mut line)?;
-        return Ok(line);
+        Ok(line)
     }
 
     pub(crate) fn unread_line(&mut self, line: String) {
@@ -28,7 +28,7 @@ impl LineBufferedStdin {
         while let Some(line) = self.buffer_stack.pop() {
             buf.extend(line.as_bytes());
         }
-        return buf;
+        buf
     }
 
     pub(crate) fn read(&mut self, size: usize) -> Result<Vec<u8>, std::io::Error> {
@@ -36,7 +36,7 @@ impl LineBufferedStdin {
         let mut buf2 = vec![0; size - buf1.len()];
         self.reader.read_exact(&mut buf2)?;
         buf1.extend(buf2);
-        return Ok(buf1);
+        Ok(buf1)
     }
 
     pub(crate) fn read_to_end(&mut self) -> Result<Vec<u8>, std::io::Error> {
@@ -44,11 +44,11 @@ impl LineBufferedStdin {
         let mut buf2 = Vec::new();
         self.reader.read_to_end(&mut buf2)?;
         buf1.extend(buf2);
-        return Ok(buf1);
+        Ok(buf1)
     }
 
     pub(crate) fn is_eof(&mut self) -> bool {
-        return match self.read_line() {
+        match self.read_line() {
             Ok(line) => {
                 if line.is_empty() {
                     true
@@ -58,6 +58,6 @@ impl LineBufferedStdin {
                 }
             }
             Err(_) => true,
-        };
+        }
     }
 }
