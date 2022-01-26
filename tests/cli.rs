@@ -1,4 +1,4 @@
-use std::{fs::read_to_string, time::Duration, collections::HashMap};
+use std::{collections::HashMap, fs::read_to_string, time::Duration};
 
 use assert_cmd::Command;
 use predicates::prelude::*;
@@ -54,7 +54,7 @@ fn parse_multi_responses() -> Result<(), Box<dyn std::error::Error>> {
 
     assert_eq!(results.len(), 3);
 
-    for result  in results {
+    for result in results {
         assert_eq!(result.protocol, "HTTP/3");
         assert_eq!(result.status_code, 200);
         assert_eq!(result.headers["content-type"], "text/html");
@@ -63,7 +63,6 @@ fn parse_multi_responses() -> Result<(), Box<dyn std::error::Error>> {
 
     Ok(())
 }
-
 
 #[test]
 fn parse_curl_sv_as_raw() -> Result<(), Box<dyn std::error::Error>> {
@@ -119,9 +118,11 @@ fn parse_curl_sv_as_json_jsonplaceholder() -> Result<(), Box<dyn std::error::Err
 
     assert_eq!(result.protocol, "HTTP/1.1");
     assert_eq!(result.status_code, 200);
-    assert_eq!(result.headers["content-type"], "application/json; charset=utf-8");
+    assert_eq!(
+        result.headers["content-type"],
+        "application/json; charset=utf-8"
+    );
     assert_eq!(result.content["id"], 1);
 
     Ok(())
 }
-

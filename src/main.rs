@@ -89,9 +89,7 @@ fn parse_status_line(lbin: &mut LineBufferedStdin) -> Result<(), Box<dyn Error>>
                 std::format!("Invalid status line: {}", str_to_json_string(&line)),
             )));
         }
-        Err(e) => {
-            Err(Box::new(e))
-        }
+        Err(e) => Err(Box::new(e)),
     }
 }
 
