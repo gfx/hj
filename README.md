@@ -1,8 +1,8 @@
-# hj
+# hj [![CI](https://github.com/gfx/hj/actions/workflows/ci.yml/badge.svg)](https://github.com/gfx/hj/actions/workflows/ci.yml)
 
-**hj** is a command line tool to convert HTTP/1 style text into JSON.
+**hj** is a command line tool to convert HTTP/1-style text into JSON.
 
-This command is inspired by https://github.com/yusukebe/rj, but this command uses an external HTTP client instead of making HTTP requests internally.
+This command is inspired by [yusukebe/rj](https://github.com/yusukebe/rj), which is a standalone HTTP client that shows HTTP responses in JSON. On the other hand, this command is not an HTTP client but a simple text filter that translates a result of an external HTTP client such as curl(1).
 
 ## Synopsis
 
@@ -87,9 +87,9 @@ output:
 
 ## Install
 
-cargo(1) and rustc(1) v1.58 or greater are required to install:
+cargo(1) and rustc(1) (>= v1.58) are required to install:
 
-```
+```shell
 cargo install --path .
 ```
 
@@ -98,7 +98,7 @@ cargo install --path .
 * curl - https://curl.se/
   * `-sv` options are required for `hj`
 * h2o-httplicent - https://github.com/h2o/h2o/
-* Any of HTTP/1 style text
+* Any of HTTP/1 style texts
 
 ## License
 
@@ -107,4 +107,3 @@ Copyright 2022 FUJI Goro.
 Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.
 
 THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-
