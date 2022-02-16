@@ -2,6 +2,11 @@
 name = "hj"
 version = "0.1.0"
 edition = "2021"
+description = "Command line tool to convert HTTP/1-style text into JSON"
+repository = "https://github.com/gfx/hj"
+categories = ["command-line-utilities"]
+license-file = "LICENSE"
+readme = "README.md"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
