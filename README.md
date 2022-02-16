@@ -87,7 +87,17 @@ output:
 
 ## Install
 
-cargo(1) and rustc(1) (>= v1.58) are required to install:
+cargo(1) and rustc(1) (>= v1.58) are required to install.
+
+### Via Crate.io
+
+https://crates.io/crates/hj
+
+```shell
+cargo install hj
+```
+
+### Local Development
 
 ```shell
 cargo install --path .
